@@ -20,7 +20,9 @@ export function NewsList() {
 
   const fetchNews = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/news');
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || '/api';
+      const response = await fetch(`${apiUrl}/news`);
+      
       const data = await response.json();
       setNews(data);
     } catch (error) {
@@ -38,13 +40,7 @@ export function NewsList() {
     <div>
       {news.map((item) => (
         <div key={item.id}>
-          {item.image_url && (
-            <img 
-              src={item.image_url} 
-              alt={item.title} 
-            />
-          )}
-          <h2 >{item.title}</h2>
+          <h2>{item.title}</h2>
           <p >{item.description}</p>
           <span >
             {new Date(item.created_at).toLocaleDateString('ru-RU')}

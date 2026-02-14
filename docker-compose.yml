@@ -1,0 +1,76 @@
+services:
+  # База данных PostgreSQL
+  db:
+    image: postgres:16-alpine
+    container_name: agesgame-db
+    restart: always
+    environment:
+      POSTGRES_USER: agesgame_user
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: agesgame
+    ports:
+      - "5433:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  # Бэкенд (Express + TypeScript)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: agesgame-backend
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://agesgame_user:mysecretpassword@db:5432/agesgame
+    depends_on:
+      - db
+    networks:
+      - app-network
+    command: sh -c "npx prisma migrate deploy && node dist/server.js"
+
+  # Фронтенд (Next.js)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: agesgame-frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=http://localhost/api
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  # Nginx (прокси-сервер)
+  nginx:
+    image: nginx:alpine
+    container_name: agesgame-nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - app-network
+
+# Волюмы для сохранения данных
+volumes:
+  db_data:
+
+# Сеть для внутреннего общения контейнеров
+networks:
+  app-network:
+    driver: bridge

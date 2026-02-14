@@ -20,5 +20,5 @@ model News {
   image_url   String?
   created_at  DateTime @default(now())
 
-  @@map("News")
+  @@map("news")
 }
