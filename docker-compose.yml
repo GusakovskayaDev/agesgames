@@ -1,7 +1,8 @@
+name: prod
+
 services:
   db:
     image: postgres:16-alpine
-    container_name: agesgame-db
     restart: always
     environment:
       POSTGRES_USER: agesgame_user
@@ -16,7 +17,6 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: agesgame-backend
     restart: always
     environment:
       - PORT=3001
@@ -32,7 +32,6 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: agesgame-frontend
     restart: always
     environment:
       - NODE_ENV=production
@@ -44,7 +43,6 @@ services:
 
   nginx:
     image: nginx:alpine
-    container_name: agesgame-nginx
     restart: always
     ports:
       - "8080:80"
