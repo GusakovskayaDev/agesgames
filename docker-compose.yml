@@ -1,5 +1,4 @@
 services:
-  # База данных PostgreSQL
   db:
     image: postgres:16-alpine
     container_name: agesgame-db
@@ -13,7 +12,6 @@ services:
     networks:
       - app-network
 
-  # Бэкенд (Express + TypeScript)
   backend:
     build:
       context: ./backend
@@ -30,7 +28,6 @@ services:
       - app-network
     command: sh -c "npx prisma migrate deploy && node dist/server.js"
 
-  # Фронтенд (Next.js)
   frontend:
     build:
       context: ./frontend
@@ -45,7 +42,6 @@ services:
     networks:
       - app-network
 
-  # Nginx (прокси-сервер)
   nginx:
     image: nginx:alpine
     container_name: agesgame-nginx
@@ -60,11 +56,9 @@ services:
     networks:
       - app-network
 
-# Волюмы для сохранения данных
 volumes:
   db_data:
 
-# Сеть для внутреннего общения контейнеров
 networks:
   app-network:
     driver: bridge
