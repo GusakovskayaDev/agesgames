@@ -3,36 +3,32 @@ stages:
 
 deploy_staging:
   stage: deploy
+  tags:
+    - shell
   script:
     - echo "🛠 Начинаем деплой на Staging..."
-    - eval $(ssh-agent -s)
-    - echo "$DEPLOY_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-    - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST "
-        cd $SERVER_PATH_STAGING &&
-        git fetch origin &&
-        git checkout develop &&
-        git reset --hard origin/develop &&
-        docker-compose pull &&
-        docker-compose up -d --build
-      "
+    - cd /root/staging
+    - git fetch origin
+    - git checkout develop
+    - git reset --hard origin/develop
+    - docker-compose pull
+    - docker-compose up -d --build
     - echo "✅ Staging обновлён: https://staging.игрывеков.рф"
   only:
     - develop
 
 deploy_production:
   stage: deploy
+  tags:
+    - shell
   script:
     - echo "🚀 Начинаем деплой на Production..."
-    - eval $(ssh-agent -s)
-    - echo "$DEPLOY_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-    - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST "
-        cd $SERVER_PATH_PROD &&
-        git fetch origin &&
-        git checkout main &&
-        git reset --hard origin/main &&
-        docker-compose pull &&
-        docker-compose up -d --build
-      "
+    - cd /root/app-prod
+    - git fetch origin
+    - git checkout main
+    - git reset --hard origin/main
+    - docker-compose pull
+    - docker-compose up -d --build
     - echo "✅ Production обновлён: https://игрывеков.рф"
   only:
     - main
