@@ -13,7 +13,7 @@ deploy_staging:
     - git reset --hard origin/develop
     - docker-compose pull
     - docker-compose up -d --build
-    - echo "✅ Staging обновлён: https://staging.игрывеков.рф"
+    - echo "Staging updated: https://staging.игрывеков.рф"
   only:
     - develop
 
@@ -29,6 +29,6 @@ deploy_production:
     - git reset --hard origin/main
     - docker-compose pull
     - docker-compose up -d --build
-    - echo "✅ Production обновлён: https://игрывеков.рф"
+    - echo "Production updated: https://игрывеков.рф"
   only:
     - main
