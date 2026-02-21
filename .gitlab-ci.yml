@@ -6,14 +6,14 @@ deploy_staging:
   tags:
     - shell
   script:
-    - echo "🛠 Начинаем деплой на Staging..."
+    - echo "Starting staging deploy"
     - cd /root/staging
     - git fetch origin
     - git checkout develop
     - git reset --hard origin/develop
     - docker-compose pull
     - docker-compose up -d --build
-    - echo "Staging updated: https://staging.игрывеков.рф"
+    - echo "Staging updated successfully"
   only:
     - develop
 
@@ -22,13 +22,13 @@ deploy_production:
   tags:
     - shell
   script:
-    - echo "🚀 Начинаем деплой на Production..."
+    - echo "Starting production deploy"
     - cd /root/app-prod
     - git fetch origin
     - git checkout main
     - git reset --hard origin/main
     - docker-compose pull
     - docker-compose up -d --build
-    - echo "Production updated: https://игрывеков.рф"
+    - echo "Production updated successfully"
   only:
     - main
