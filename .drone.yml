@@ -7,6 +7,14 @@ trigger:
     - main
     - develop
 
+volumes:
+  - name: prod
+    host:
+      path: /root/prod
+  - name: staging
+    host:
+      path: /root/staging
+
 steps:
   - name: deploy-staging
     image: alpine/git
@@ -19,6 +27,9 @@ steps:
       - docker compose pull
       - docker compose up -d --build
       - echo "Successfully! Staging updated"
+    volumes:
+      - name: staging
+        path: /root/staging
 
   - name: deploy-prod
     image: alpine/git
@@ -31,3 +42,6 @@ steps:
       - docker compose pull
       - docker compose up -d --build
       - echo "Successfully! Production updated"
+    volumes:
+      - name: prod
+        path: /root/prod
