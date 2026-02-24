@@ -6,7 +6,8 @@ import { NewsList } from "@/components/NewsList";
 export default function Home() {
   return (
     <>
-      <h1>Hello!</h1>
+      <h1>Упс...</h1>
+      <p>Сайт проходит техническое обслуживание</p>
       <NewsList />
     </>
   );
