@@ -1,23 +1,25 @@
 'use client'
 
-import Image from "next/image";
 import styles from "./page.module.css";
-import { NewsList } from "@/components/NewsList";
-import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
 export default function Home() {
   return (
-    <>
-    <div className={styles.container}>
-      <h1 className={styles.header}>Упс...</h1>
-      <p className={styles.desc}>Сайт проходит техническое обслуживание</p>
-      <Image src={"/tech-maintenance.jpg"} alt={"Техническое обслуживание"} width={600} height={600}/>
-      <NewsList />
-      <Button variant="contained" color="primary">
-        Начать игру
-      </Button>
-    </div>
-      
-    </>
+    <Box 
+      component="main" 
+      sx={{ 
+        flexGrow: 1, 
+        py: 4,
+        minHeight: 'calc(100vh - 80px)',
+      }}
+    >
+      <Container maxWidth="xl">
+        <Typography variant="h4" component="h1" gutterBottom>
+          Добро пожаловать в Игры Веков
+        </Typography>
+      </Container>
+    </Box>
   );
 }
