@@ -3,6 +3,7 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import { NewsList } from "@/components/NewsList";
+import Button from '@mui/material/Button';
 
 export default function Home() {
   return (
@@ -12,6 +13,9 @@ export default function Home() {
       <p className={styles.desc}>Сайт проходит техническое обслуживание</p>
       <Image src={"/tech-maintenance.jpg"} alt={"Техническое обслуживание"} width={600} height={600}/>
       <NewsList />
+      <Button variant="contained" color="primary">
+        Начать игру
+      </Button>
     </div>
       
     </>
