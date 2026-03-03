@@ -56,7 +56,7 @@ export default function Header() {
   );
 
   return (
-    <AppBar position="sticky" color="transparent" elevation={1} sx={{ backdropFilter: 'blur(8px)', backgroundColor: 'rgba(34, 26, 3, 10)' }}>
+    <AppBar position="sticky" color="transparent" elevation={1} sx={{ backdropFilter: 'blur(8px)', backgroundColor: 'primary.main' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ minHeight: '80px !important' }}>
           

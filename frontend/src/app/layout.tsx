@@ -7,6 +7,7 @@ import localFont from "next/font/local";
 import Header from "../components/Header";
 import theme from '../theme';
 import "./globals.css";
+import Footer from "@/components/Footer";
 
 const roboto = Roboto({
   weight: ['300', '400', '500', '700'],
@@ -50,6 +51,7 @@ export default function RootLayout({
             <main>
               {children}
             </main>
+            <Footer />
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
