@@ -1,12 +1,11 @@
 # Stage 1: Установка зависимостей
-FROM node:18-alpine AS deps
-RUN apk add --no-cache libc6-compat
+FROM node:20 AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 
 # Stage 2: Сборка приложения
-FROM node:18-alpine AS builder
+FROM node:20 AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -14,7 +13,7 @@ ENV NEXT_TELEMETRY_DISABLED 1
 RUN npm run build
 
 # Stage 3: Финальный образ (Runner)
-FROM node:18-alpine AS runner
+FROM node:20 AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
