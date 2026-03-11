@@ -1,66 +1,19 @@
-# docker-compose.yml
 version: '3.8'
 
 services:
-  # 📦 Next.js приложение (Фронтенд + Бэкенд API)
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: ages-game-app
+  web:
+    build: .
+    container_name: ${CONTAINER_NAME:-nextjs-app}
+    restart: always
     ports:
-      - "3000:3000"
+      - "${HOST_PORT:-3000}:3000"
+    env_file:
+      - .env
     environment:
       - NODE_ENV=production
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/ages_game?schema=public
-      - JWT_SECRET=${JWT_SECRET}
-    depends_on:
-      db:
-        condition: service_healthy
-    restart: unless-stopped
     networks:
-      - ages-network
-
-  # 🗄️ PostgreSQL
-  db:
-    image: postgres:15-alpine
-    container_name: ages-game-db
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=ages_game
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    restart: unless-stopped
-    networks:
-      - ages-network
-
-  # 🌐 Nginx (опционально, для продакшена)
-  nginx:
-    image: nginx:alpine
-    container_name: ages-game-nginx
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/ssl:/etc/nginx/ssl:ro
-    depends_on:
-      - app
-    restart: unless-stopped
-    networks:
-      - ages-network
-
-volumes:
-  postgres_data:
+      - app-network
 
 networks:
-  ages-network:
+  app-network:
     driver: bridge
